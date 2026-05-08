@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fridge Hero — AI Recipe Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-shell">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="brand">
+          <div class="brand-icon">FH</div>
+          <div class="brand-text">
+            <span class="brand-name">Fridge Hero</span>
+            <span class="brand-tag">AI Recipe Generator</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="nav-section-label">Prompt Engine</div>
+          <div class="nav-pills">
+            <div class="nav-pill active">
+              <div class="pill-dot teal"></div>
+              <span>Context</span>
+            </div>
+            <div class="nav-pill active">
+              <div class="pill-dot teal"></div>
+              <span>Objective</span>
+            </div>
+            <div class="nav-pill active">
+              <div class="pill-dot teal"></div>
+              <span>Style</span>
+            </div>
+            <div class="nav-pill active">
+              <div class="pill-dot teal"></div>
+              <span>Tone</span>
+            </div>
+            <div class="nav-pill active">
+              <div class="pill-dot teal"></div>
+              <span>Audience</span>
+            </div>
+            <div class="nav-pill active">
+              <div class="pill-dot teal"></div>
+              <span>Response</span>
+            </div>
+          </div>
+
+          <div class="nav-section-label" style="margin-top:24px">Model</div>
+          <div class="model-chip">
+            <div class="model-dot"></div>
+            <span>Gemini 2.5 Flash</span>
+          </div>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">
+        Session 1 Assignment<br>AI Foundations
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title">Recipe Generator</h1>
+          <p class="page-sub">CO-STAR prompt engineering · Michelin-grade output</p>
+        </div>
+        <div class="topbar-right">
+          <div class="status-chip">
+            <div class="status-dot"></div>
+            API Connected
+          </div>
+        </div>
+      </header>
+
+      <!-- Content grid -->
+      <div class="content-grid">
+
+        <!-- INPUT PANEL -->
+        <section class="panel input-panel">
+          <div class="panel-header">
+            <div class="panel-num">01</div>
+            <div>
+              <div class="panel-title">Your Ingredients</div>
+              <div class="panel-desc">Enter 3 ingredients to generate a recipe</div>
+            </div>
+          </div>
+
+          <div class="fields">
+            <div class="field-row">
+              <label class="field-label">Ingredient A</label>
+              <input class="field-input" type="text" id="ingredient1" placeholder="e.g. Chicken" autocomplete="off">
+            </div>
+            <div class="field-row">
+              <label class="field-label">Ingredient B</label>
+              <input class="field-input" type="text" id="ingredient2" placeholder="e.g. Lemon" autocomplete="off">
+            </div>
+            <div class="field-row">
+              <label class="field-label">Ingredient C</label>
+              <input class="field-input" type="text" id="ingredient3" placeholder="e.g. Garlic" autocomplete="off">
+            </div>
+          </div>
+
+          <button class="generate-btn" id="cookBtn">
+            <span id="btnText">Generate Recipe</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+
+          <div class="loading-bar" id="loading">
+            <div class="loading-progress"></div>
+            <span>Generating your recipe…</span>
+          </div>
+
+          <div class="error-msg" id="error"></div>
+        </section>
+
+        <!-- RESULT PANEL -->
+        <section class="panel result-panel" id="resultCard">
+          <div class="panel-header">
+            <div class="panel-num teal">02</div>
+            <div>
+              <div class="panel-title">Your Recipe</div>
+              <div class="panel-desc">AI-generated Michelin-grade result</div>
+            </div>
+            <div class="panel-actions">
+              <div class="lang-toggle">
+                <button class="lang-btn active" id="btnEn" onclick="switchLanguage('en')">🇬🇧 English</button>
+                <button class="lang-btn" id="btnPa" onclick="switchLanguage('pa')">🇮🇳 ਪੰਜਾਬੀ</button>
+              </div>
+              <button class="pdf-btn" onclick="saveAsPDF()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export PDF
+              </button>
+            </div>
+          </div>
+
+          <div class="recipe-name-block">
+            <div class="recipe-name-label">Dish Name</div>
+            <h2 class="recipe-name" id="dishName"></h2>
+            <div class="recipe-tags" id="ingredientsUsed"></div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="translate-loading" id="translateLoading">
+            <div class="translate-spinner"></div>
+            <span>Translating to Punjabi…</span>
+          </div>
+
+          <div class="method-block">
+            <div class="method-label">Method</div>
+            <ol class="method-steps" id="recipeSteps"></ol>
+          </div>
+
+          <div class="recipe-footer">
+            <span>Generated by Gemini 2.5 Flash</span>
+            <span>CO-STAR Prompt Engineering</span>
+          </div>
+        </section>
+
+        <!-- PROMPT PANEL -->
+        <section class="panel prompt-panel" id="promptCard">
+          <div class="panel-header">
+            <div class="panel-num">03</div>
+            <div>
+              <div class="panel-title">CO-STAR Prompt</div>
+              <div class="panel-desc">Structured prompt sent to the AI</div>
+            </div>
+          </div>
+          <pre class="prompt-code" id="promptDisplay"></pre>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

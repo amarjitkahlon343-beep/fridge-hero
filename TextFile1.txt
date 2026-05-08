@@ -1,0 +1,8 @@
+Replace your 3 files with these new ones
+Open script.js and paste your API key on line 1
+Run python -m http.server 5500 in terminal
+Go to http://localhost:5500
+
+const API_KEY = 'AIzaSyBo6F_AJf7MilaHA91bfVpw-alQ4mJ_2PU';
+
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
